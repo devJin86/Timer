@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Timer</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+    }
+
+    div#container {
+      width: 100vw;
+      height: 100vh;
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      background-color: #26a69a;
+    }
+    h1 {
+      position: absolute;
+      top: 27%;
+      color: #512da8;
+    }
+    div.time_wrapper {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      width: 180px;
+      height: 135px;
+      border: 1px solid #bdbdbd;
+    }
+    span {
+      font-size: 2.7em;
+      color: #e0e0e0;
+      width: 72px;
+      height: 72px;
+      height: auto;
+      text-align: center;
+      top: 50%;
+      background-color: #00897b;
+      margin: 0 0 5px 0;
+    }
+    p {
+      color: #546e7a;
+      font-size: 1.3em;
+    }
+
+  </style>
+
+</head>
+<body>
+  <div id="container"></div>
+  <script>
+
+    var targetDate = 'May 1 2017';
+
+    var timeTicker = function(_date) {
+      // find the remaining time in miliseconds
+      var now = new Date(),
+          target = Date.parse(_date),
+          diff = target - now;
+
+
+      // time unit in miliSconds : int
+      var seconds = Math.floor((diff / 1000) % 60);
+      var minutes = Math.floor((diff / (1000 * 60 )) % 60);
+      var hours = Math.floor((diff / (1000 * 60 * 60 )) % 24);
+      var days = Math.floor((diff / (1000 * 60 * 60 * 24 )));
+
+      // modifty seconds for two digits if it is a single digit
+      var mod_time = function(timeUnit) {
+        var _strUnit = timeUnit.toString();
+        return _strUnit.length > 1 ? _strUnit : '0' + _strUnit;
+      }
+
+      return {
+        'day' : days.toString(),
+        'hour': mod_time(hours),
+        'min' : mod_time(minutes),
+        'sec' : mod_time(seconds),
+      }
+
+    };
+
+    /* Add Dom Nodes */
+    var container = document.getElementById('container');
+
+    var header = document.createElement('h1');
+    header.innerHTML = 'End Date: May 1st 2017';
+    container.appendChild(header);
+
+    var dateContainer = document.createElement('div');
+
+    dateContainer.setAttribute('class', 'time_wrapper');
+    container.appendChild(dateContainer);
+
+
+    var hourContainer = document.createElement('div');
+
+    hourContainer.setAttribute('class', 'time_wrapper');
+    container.appendChild(hourContainer);
+
+    var minContainer = document.createElement('div');
+    minContainer.setAttribute('class', 'time_wrapper');
+    container.appendChild(minContainer);
+
+    var secContainer = document.createElement('div');
+    secContainer.setAttribute('class', 'time_wrapper');
+    container.appendChild(secContainer);
+
+
+    /* Create spans for displaying time units */
+    var span_date = document.createElement('span');
+    span_date.setAttribute('id', 'date');
+    var span_hr = document.createElement('span');
+    span_hr.setAttribute('id', 'hour');
+    var span_min = document.createElement('span');
+    span_min.setAttribute('id', 'min');
+    var span_sec = document.createElement('span');
+    span_sec.setAttribute('id', 'sec')
+
+    dateContainer.appendChild(span_date)
+    hourContainer.appendChild(span_hr)
+    minContainer.appendChild(span_min)
+    secContainer.appendChild(span_sec)
+
+    var dateEle = document.createElement('p');
+    dateEle.innerHTML = 'Days';
+    dateContainer.appendChild(dateEle);
+
+    var hrEle = document.createElement('p');
+    hrEle.innerHTML = 'Hours';
+    hourContainer.appendChild(hrEle);
+
+    var minEle = document.createElement('p');
+    minEle.innerHTML = 'Minutes';
+    minContainer.appendChild(minEle);
+
+    var secEle = document.createElement('p');
+    secEle.innerHTML = 'Seconds';
+    secContainer.appendChild(secEle);
+
+    /* Call timeTicker every 1000ms */
+    setInterval(function() {
+      var units = timeTicker(targetDate);
+      span_date.innerHTML = units.day;
+      span_hr.innerHTML = units.hour;
+      span_min.innerHTML = units.min;
+      span_sec.innerHTML = units.sec;
+    }, 1000);
+
+
+  </script>
+</body>
+</html>
